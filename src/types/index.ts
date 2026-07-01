@@ -46,3 +46,8 @@ export interface HeroCardProps {
     hero: Hero
     t: Record<string, string>
 }
+
+export interface HeroGridProps {
+    heroes: Hero[]
+    t: Record<string, string>
+}

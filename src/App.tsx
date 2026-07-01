@@ -4,22 +4,26 @@ import SearchBar from './components/SearchBar'
 import FilterPanel from './components/FilterPanel'
 import HeroGrid from './components/HeroGrid'
 import HeroModal from './components/HeroModal'
+import HeroCompare from './components/HeroCompare'
 import { useHeroes } from './hooks/useHeroes'
 import { useAppFeatures } from './hooks/useAppFeatures'
 import { useTeam } from './hooks/useTeam'
+import { useVersus } from './hooks/useVersus'
 import { translations } from './utils/languages'
 import type { FilterState, Hero } from './types'
 
 export default function App() {
+    // Lógica delegada a hooks de infraestructura y negocio
     const { theme, toggleTheme, lang, setLang } = useAppFeatures()
     const { favorites, handleToggleFavorite } = useTeam()
+    const { compareHeroes, handleSelectForCompare, clearArena } = useVersus()
 
+    // Estados mínimos de UI local
     const [search, setSearch] = useState('')
     const [page, setPage] = useState(1)
     const [selectedHero, setSelectedHero] = useState<Hero | null>(null)
     const [filters, setFilters] = useState<FilterState>({ publisher: '', alignment: '' })
 
-    // Desestructuramos totalPages desde nuestro hook actualizado
     const { heroes, loading, totalPages } = useHeroes(search, filters, page)
     const t = translations[lang]
 
@@ -32,7 +36,6 @@ export default function App() {
             <Header theme={theme} toggleTheme={toggleTheme} lang={lang} setLang={setLang} t={t} />
             <SearchBar search={search} setSearch={setSearch} t={t} />
             <FilterPanel filters={filters} setFilters={setFilters} t={t} />
-
             {loading ? (
                 <div className='loading-spinner'>...</div>
             ) : (
@@ -44,20 +47,11 @@ export default function App() {
                         favorites={favorites}
                         onToggleFavorite={handleToggleFavorite}
                     />
-
-                    {/* Nueva Paginación Avanzada */}
                     <div className='pagination-container'>
                         <button disabled={page === 1} onClick={() => setPage(page - 1)} className='pagination-btn'>◀</button>
-
                         <div className='pagination-info'>
                             <span>{lang === 'es' ? `Página ${page} de ${totalPages}` : `Page ${page} of ${totalPages}`}</span>
-
-                            {/* Selector dinámico para saltar a una página específica */}
-                            <select
-                                value={page}
-                                onChange={(e) => setPage(Number(e.target.value))}
-                                className='page-select'
-                            >
+                            <select value={page} onChange={(e) => setPage(Number(e.target.value))} className='page-select'>
                                 {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
                                     <option key={p} value={p}>
                                         {lang === 'es' ? `Ir a pág. ${p}` : `Go to p. ${p}`}
@@ -65,26 +59,38 @@ export default function App() {
                                 ))}
                             </select>
                         </div>
-
                         <button disabled={page === totalPages} onClick={() => setPage(page + 1)} className='pagination-btn'>▶</button>
                     </div>
                 </>
             )}
-
+            {/* Arena de Comparación Versus */}
+            {compareHeroes.length > 0 && (
+                <HeroCompare
+                    heroes={compareHeroes}
+                    onClear={clearArena}
+                    t={t}
+                    lang={lang}
+                />
+            )}
+            {/* Sección exclusiva de Mi Equipo Personalizado */}
             {favorites.length > 0 && (
                 <section className='team-section'>
                     <hr className='section-divider' />
-                    <h2>{t.myTeamTitle}</h2>
+                    <div className='team-header-box'>
+                        <h2>{t.myTeamTitle}</h2>
+                        <p className='team-instruction'>
+                            {lang === 'es' ? '💡 Haz clic en los personajes de tu equipo para enviarlos a la Arena de Comparación Versus.' : '💡 Click characters in your team to send them to the Versus Comparison Arena.'}
+                        </p>
+                    </div>
                     <HeroGrid
                         heroes={favorites}
                         t={t}
-                        onViewDetail={setSelectedHero}
+                        onViewDetail={handleSelectForCompare}
                         favorites={favorites}
                         onToggleFavorite={handleToggleFavorite}
                     />
                 </section>
             )}
-
             <HeroModal hero={selectedHero} onClose={() => setSelectedHero(null)} t={t} />
         </div>
     )

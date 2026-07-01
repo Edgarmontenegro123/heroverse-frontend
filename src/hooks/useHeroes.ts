@@ -4,6 +4,7 @@ import type {Hero, FilterState} from '../types'
 
 export const useHeroes = (search: string, filters: FilterState, page: number) => {
     const [heroes, setHeroes] = useState<Hero[]>([])
+    const [totalPages, setTotalPages] = useState<number>(1)
     const [loading, setLoading] = useState<boolean>(false)
 
     useEffect(() => {
@@ -20,7 +21,7 @@ export const useHeroes = (search: string, filters: FilterState, page: number) =>
 
                 let data: Hero[] = Array.isArray(response.data) ? response.data : response.data.data || []
 
-                // Por si las moscas el backend no filtró por bando/empresa, lo aseguramos en el cliente:
+                // Filtrado preventivo en el cliente
                 if (filters.publisher) {
                     data = data.filter(h => h.biography.publisher === filters.publisher)
                 }
@@ -28,8 +29,12 @@ export const useHeroes = (search: string, filters: FilterState, page: number) =>
                     data = data.filter(h => h.biography.alignment === filters.alignment)
                 }
 
-                // Paginación manual infalible en el cliente para evitar la lista enorme
                 const limit = 12
+                // Calculamos el total de páginas real en base a los personajes filtrados
+                const total = Math.ceil(data.length / limit)
+                setTotalPages(total > 0 ? total : 1)
+
+                // Segmentación para la página actual
                 const startIndex = (page - 1) * limit
                 const endIndex = startIndex + limit
 
@@ -48,5 +53,5 @@ export const useHeroes = (search: string, filters: FilterState, page: number) =>
         return () => clearTimeout(delayDebounceFn)
     }, [search, filters.publisher, filters.alignment, page])
 
-    return {heroes, loading}
+    return {heroes, loading, totalPages}
 }

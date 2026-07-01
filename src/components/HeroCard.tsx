@@ -1,13 +1,13 @@
 import type {HeroCardProps} from '../types'
 
-export default function HeroCard({hero, t, onViewDetail, isFavorite, onToggleFavorite}: HeroCardProps) {
+export default function HeroCard({ hero, t, onViewDetail, isFavorite, onToggleFavorite }: HeroCardProps) {
+    // Aseguramos una clase por defecto si viene vacío
+    const alignmentClass = hero.biography.alignment || 'neutral'
+
     return (
-        <div className='hero-card'>
+        <div className={`hero-card alignment-${alignmentClass}`}>
             <div className='image-container'>
                 <img src={hero.images.sm} alt={hero.name} />
-                <span className={`badge ${hero.biography.alignment}`}>
-          {t[hero.biography.alignment] || hero.biography.alignment.toUpperCase()}
-        </span>
             </div>
             <div className='hero-info'>
                 <h3>{hero.name}</h3>

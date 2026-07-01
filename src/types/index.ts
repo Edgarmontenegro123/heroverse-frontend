@@ -41,3 +41,8 @@ export interface SearchBarProps {
     setSearch: (value: string) => void
     t: Record<string, string>
 }
+
+export interface HeroCardProps {
+    hero: Hero
+    t: Record<string, string>
+}

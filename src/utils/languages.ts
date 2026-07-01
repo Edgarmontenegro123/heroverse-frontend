@@ -1,4 +1,4 @@
-import type { Language } from '../types';
+import type { Language } from '../types'
 
 export const translations: Record<Language, Record<string, string>> = {
     es: {
@@ -41,4 +41,4 @@ export const translations: Record<Language, Record<string, string>> = {
         inboxTitle: 'Inbox (Received Messages)',
         alertSuccess: 'Message successfully sent to the inbox!'
     }
-};
+}

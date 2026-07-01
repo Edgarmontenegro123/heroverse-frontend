@@ -51,3 +51,7 @@ export interface HeroGridProps {
     heroes: Hero[]
     t: Record<string, string>
 }
+
+export interface ContactInboxProps {
+    t: Record<string, string>
+}

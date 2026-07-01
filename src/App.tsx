@@ -50,11 +50,11 @@ export default function App() {
                     <div className='pagination-container'>
                         <button disabled={page === 1} onClick={() => setPage(page - 1)} className='pagination-btn'>◀</button>
                         <div className='pagination-info'>
-                            <span>{lang === 'es' ? `Página ${page} de ${totalPages}` : `Page ${page} of ${totalPages}`}</span>
+                            <span>{t.pageOf} {page} {t.pageConnector} {totalPages}</span>
                             <select value={page} onChange={(e) => setPage(Number(e.target.value))} className='page-select'>
                                 {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
                                     <option key={p} value={p}>
-                                        {lang === 'es' ? `Ir a pág. ${p}` : `Go to p. ${p}`}
+                                        {t.goToPage} {p}
                                     </option>
                                 ))}
                             </select>
@@ -78,9 +78,7 @@ export default function App() {
                     <hr className='section-divider' />
                     <div className='team-header-box'>
                         <h2>{t.myTeamTitle}</h2>
-                        <p className='team-instruction'>
-                            {lang === 'es' ? '💡 Haz clic en los personajes de tu equipo para enviarlos a la Arena de Comparación Versus.' : '💡 Click characters in your team to send them to the Versus Comparison Arena.'}
-                        </p>
+                        <p className='team-instruction'>{t.teamInstruction}</p>
                     </div>
                     <HeroGrid
                         heroes={favorites}

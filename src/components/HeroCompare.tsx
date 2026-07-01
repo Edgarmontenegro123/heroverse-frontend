@@ -1,16 +1,15 @@
-import type {Hero} from '../types'
+import type { Hero } from '../types'
 
 interface HeroCompareProps {
     heroes: Hero[]
     onClear: () => void
     t: any
-    lang: string
+    lang: string // Lo mantenemos por si tipado lo requiere, aunque usamos 't'
 }
 
-export default function HeroCompare({ heroes, onClear, t, lang }: HeroCompareProps) {
+export default function HeroCompare({ heroes, onClear, t }: HeroCompareProps) {
     const [hero1, hero2] = heroes
 
-    // Función para calcular el total acumulado de powerstats
     const getStatsTotal = (h: Hero | undefined) => {
         if (!h) return 0
         return Object.values(h.powerstats).reduce((acc, stat) => acc + (stat || 0), 0)
@@ -19,7 +18,6 @@ export default function HeroCompare({ heroes, onClear, t, lang }: HeroComparePro
     const total1 = getStatsTotal(hero1)
     const total2 = getStatsTotal(hero2)
 
-    // Asignación de clases CSS dinámicas según quién gana el atributo
     const getWinnerClass = (val1: number, val2: number, current: 1 | 2) => {
         if (val1 === val2) return ''
         if (val1 > val2) return current === 1 ? 'stat-winner' : 'stat-loser'
@@ -30,37 +28,35 @@ export default function HeroCompare({ heroes, onClear, t, lang }: HeroComparePro
         { key: 'intelligence', label: t.intelligence },
         { key: 'strength', label: t.strength },
         { key: 'speed', label: t.speed },
-        { key: 'durability', label: lang === 'es' ? 'Durabilidad' : 'Durability' },
-        { key: 'power', label: lang === 'es' ? 'Poder' : 'Power' },
-        { key: 'combat', label: lang === 'es' ? 'Combate' : 'Combat' }
+        { key: 'durability', label: t.durability },
+        { key: 'power', label: t.power },
+        { key: 'combat', label: t.combat }
     ]
 
     return (
         <section className='compare-section'>
             <hr className='section-divider' />
             <div className='compare-header'>
-                <h2>{lang === 'es' ? '⚔️ Arena Versus Multiverso' : '⚔️ Multiverse Versus Arena'}</h2>
+                <h2>{t.versusTitle}</h2>
                 <button className='control-btn' onClick={onClear}>
-                    {lang === 'es' ? 'Limpiar Arena' : 'Clear Arena'}
+                    {t.clearArena}
                 </button>
             </div>
 
             <div className='compare-arena-grid'>
-                {/* Ranura del Personaje 1 */}
                 <div className={`compare-card ${hero1 ? `alignment-${hero1.biography.alignment}` : ''}`}>
                     {hero1 ? (
                         <>
                             <img src={hero1.images.sm} alt={hero1.name} />
                             <h3>{hero1.name}</h3>
                             <p className='compare-total-badge'>Total: {total1} pts</p>
-                            {hero2 && total1 > total2 && <span className='winner-ribbon'>🏆 GANADOR</span>}
+                            {hero2 && total1 > total2 && <span className='winner-ribbon'>{t.winner}</span>}
                         </>
                     ) : (
-                        <div className='placeholder-slot'>{lang === 'es' ? 'Selecciona un héroe' : 'Select a hero'}</div>
+                        <div className='placeholder-slot'>{t.selectHero}</div>
                     )}
                 </div>
 
-                {/* Panel Central de Atributos Enfrentados */}
                 <div className='compare-stats-center'>
                     {hero1 && hero2 ? (
                         statsList.map((stat) => {
@@ -82,23 +78,20 @@ export default function HeroCompare({ heroes, onClear, t, lang }: HeroComparePro
                             )
                         })
                     ) : (
-                        <div className='waiting-message'>
-                            {lang === 'es' ? 'Falta elegir un oponente para iniciar la batalla...' : 'Waiting for an opponent to start battle...'}
-                        </div>
+                        <div className='waiting-message'>{t.waitingOpponent}</div>
                     )}
                 </div>
 
-                {/* Ranura del Personaje 2 */}
-                <div className={`compare-card ${hero2 ? `alignment-${hero2.biography.alignment}` : ''}`}>
+                <div className='compare-card ${hero2 ? `alignment-${hero2.biography.alignment}` : ""}_'>
                     {hero2 ? (
                         <>
                             <img src={hero2.images.sm} alt={hero2.name} />
                             <h3>{hero2.name}</h3>
                             <p className='compare-total-badge'>Total: {total2} pts</p>
-                            {hero1 && total2 > total1 && <span className='winner-ribbon'>🏆 GANADOR</span>}
+                            {hero1 && total2 > total1 && <span className='winner-ribbon'>{t.winner}</span>}
                         </>
                     ) : (
-                        <div className='placeholder-slot'>{lang === 'es' ? 'Selecciona un segundo héroe' : 'Select a second hero'}</div>
+                        <div className='placeholder-slot'>{t.selectSecondHero}</div>
                     )}
                 </div>
             </div>

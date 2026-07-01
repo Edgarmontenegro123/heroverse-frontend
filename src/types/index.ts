@@ -35,3 +35,9 @@ export interface HeaderProps {
     setLang: (lang: Language) => void
     t: Record<string, string>
 }
+
+export interface SearchBarProps {
+    search: string
+    setSearch: (value: string) => void
+    t: Record<string, string>
+}

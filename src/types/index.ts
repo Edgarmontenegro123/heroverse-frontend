@@ -54,3 +54,25 @@ export interface HeroModalProps {
     onClose: () => void
     t: Record<string, string>
 }
+
+export interface FilterPanelProps {
+    filters: FilterState
+    setFilters: (filters: FilterState) => void
+    t: Record<string, string>
+}
+
+export interface HeroCardProps {
+    hero: Hero
+    t: Record<string, string>
+    onViewDetail: (hero: Hero) => void
+    isFavorite: boolean
+    onToggleFavorite: (hero: Hero) => void
+}
+
+export interface HeroGridProps {
+    heroes: Hero[]
+    t: Record<string, string>
+    onViewDetail: (hero: Hero) => void
+    favorites: Hero[]
+    onToggleFavorite: (hero: Hero) => void
+}

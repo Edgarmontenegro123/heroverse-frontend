@@ -1,15 +1,10 @@
-import type { Language } from '../types'
+import type {Language} from '../types'
 
 export const translations: Record<Language, Record<string, string>> = {
     es: {
         title: 'HeroVerse Multiverse',
         searchPlaceholder: 'Buscar héroe o villano...',
-        inputPlaceholderName: 'Tu Nombre',
-        inputPlaceholderEmail: 'Tu Correo',
-        inputPlaceholderMessage: 'Escribe tu mensaje aquí...',
-        sendButton: 'Enviar Mensaje',
-        formTitle: 'Contacto e Inbox de Héroes',
-        viewProfile: 'Ver Perfil',
+        viewProfile: 'Ver Detalle',
         stats: 'Estadísticas de Poder',
         intelligence: 'Inteligencia',
         strength: 'Fuerza',
@@ -17,19 +12,24 @@ export const translations: Record<Language, Record<string, string>> = {
         durability: 'Durabilidad',
         power: 'Poder',
         combat: 'Combate',
-        emptyInbox: 'El inbox está vacío. ¡Envía un mensaje arriba!',
-        inboxTitle: 'Bandeja de Entrada (Mensajes Recibidos)',
-        alertSuccess: '¡Mensaje enviado con éxito al inbox!'
+        allPublishers: 'Todas las Editoriales',
+        allAlignments: 'Todos los Bandos',
+        good: 'Héroe',
+        bad: 'Villano',
+        neutral: 'Neutral',
+        addToTeam: 'Añadir al Equipo',
+        removeFromTeam: 'Quitar del Equipo',
+        myTeamTitle: 'Mi Equipo Personalizado',
+        emptyTeam: 'Aún no has reclutado a nadie para tu equipo.',
+        realName: 'Nombre Real',
+        placeOfBirth: 'Lugar de Nacimiento',
+        firstAppearance: 'Primera Aparición',
+        close: 'Cerrar'
     },
     en: {
         title: 'HeroVerse Multiverse',
         searchPlaceholder: 'Search hero or villain...',
-        inputPlaceholderName: 'Your Name',
-        inputPlaceholderEmail: 'Your Email',
-        inputPlaceholderMessage: 'Write your message here...',
-        sendButton: 'Send Message',
-        formTitle: 'Contact & Heroes Inbox',
-        viewProfile: 'View Profile',
+        viewProfile: 'View Details',
         stats: 'Power Stats',
         intelligence: 'Intelligence',
         strength: 'Strength',
@@ -37,8 +37,18 @@ export const translations: Record<Language, Record<string, string>> = {
         durability: 'Durability',
         power: 'Power',
         combat: 'Combat',
-        emptyInbox: 'Inbox is empty. Send a message above!',
-        inboxTitle: 'Inbox (Received Messages)',
-        alertSuccess: 'Message successfully sent to the inbox!'
+        allPublishers: 'All Publishers',
+        allAlignments: 'All Alignments',
+        good: 'Hero',
+        bad: 'Villain',
+        neutral: 'Neutral',
+        addToTeam: 'Add to Team',
+        removeFromTeam: 'Remove from Team',
+        myTeamTitle: 'My Custom Team',
+        emptyTeam: 'You haven\'t recruited anyone to your team yet.',
+        realName: 'Real Name',
+        placeOfBirth: 'Place of Birth',
+        firstAppearance: 'First Appearance',
+        close: 'Close'
     }
 }

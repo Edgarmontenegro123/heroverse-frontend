@@ -20,14 +20,6 @@ export interface Hero {
     }
 }
 
-export interface Message {
-    id: number
-    name: string
-    email: string
-    text: string
-    date: string
-}
-
 export interface HeaderProps {
     theme: 'light' | 'dark'
     toggleTheme: () => void
@@ -52,6 +44,13 @@ export interface HeroGridProps {
     t: Record<string, string>
 }
 
-export interface ContactInboxProps {
+export interface FilterState {
+    publisher: string
+    alignment: string
+}
+
+export interface HeroModalProps {
+    hero: Hero | null
+    onClose: () => void
     t: Record<string, string>
 }

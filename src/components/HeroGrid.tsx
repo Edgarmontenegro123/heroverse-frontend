@@ -1,7 +1,7 @@
 import HeroCard from './HeroCard'
-import type { HeroGridProps } from '../types'
+import type {HeroGridProps} from '../types'
 
-export default function HeroGrid({ heroes, t }: HeroGridProps) {
+export default function HeroGrid({heroes, t}: HeroGridProps) {
     return (
         <main className='heroes-grid'>
             {heroes.map((hero) => (

@@ -5,7 +5,11 @@ export default function HeroCard({ hero, t, onViewDetail, isFavorite, onToggleFa
     const alignmentClass = hero.biography.alignment || 'neutral'
 
     return (
-        <div className={`hero-card alignment-${alignmentClass}`}>
+        <div
+            className={`hero-card alignment-${alignmentClass}`}
+            onClick={() => onViewDetail(hero)}
+            style={{ cursor: 'pointer' }} // Agrega el cursor de mano para indicar que es cliqueable
+        >
             <div className='image-container'>
                 <img src={hero.images.sm} alt={hero.name} />
             </div>
@@ -20,14 +24,11 @@ export default function HeroCard({ hero, t, onViewDetail, isFavorite, onToggleFa
                 </div>
                 <div className='card-actions'>
                     <button
-                        className='action-btn detail-btn'
-                        onClick={() => onViewDetail(hero)}
-                    >
-                        {t.viewProfile}
-                    </button>
-                    <button
                         className={`action-btn team-btn ${isFavorite ? 'remove' : 'add'}`}
-                        onClick={() => onToggleFavorite(hero)}
+                        onClick={(e) => {
+                            e.stopPropagation() // 👈 Evita que se abra el modal al hacer clic en el botón del equipo
+                            onToggleFavorite(hero)
+                        }}
                     >
                         {isFavorite ? t.removeFromTeam : t.addToTeam}
                     </button>

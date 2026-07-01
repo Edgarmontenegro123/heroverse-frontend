@@ -1,23 +1,31 @@
-import {useState} from 'react'
-import type {Hero} from '../types'
+import { useState, useEffect } from 'react'
+import type { Hero } from '../types'
 
 export const useVersus = () => {
-    const [compareHeroes, setCompareHeroes] = useState<Hero[]>([])
+    // Inicializa el estado de la arena buscando si había una batalla guardada
+    const [compareHeroes, setCompareHeroes] = useState<Hero[]>(() => {
+        const savedArena = localStorage.getItem('hero_verse_arena')
+        return savedArena ? JSON.parse(savedArena) : []
+    })
+
+    // Guarda automáticamente los contrincantes seleccionados en el navegador
+    useEffect(() => {
+        localStorage.setItem('hero_verse_arena', JSON.stringify(compareHeroes))
+    }, [compareHeroes])
 
     const handleSelectForCompare = (hero: Hero) => {
         setCompareHeroes((prev) => {
-            const exists = prev.some((h) => h.id === hero.id)
-            if (exists) {
-                return prev.filter((h) => h.id !== hero.id)
-            }
-            if (prev.length < 2) {
-                return [...prev, hero]
-            }
-            return [prev[0], hero]
+            // Si ya está en la arena, no hace nada
+            if (prev.some((h) => h.id === hero.id)) return prev
+            // Máximo 2 héroes en combate
+            if (prev.length >= 2) return [prev[1], hero]
+            return [...prev, hero]
         })
     }
 
-    const clearArena = () => setCompareHeroes([])
+    const clearArena = () => {
+        setCompareHeroes([])
+    }
 
     return {
         compareHeroes,

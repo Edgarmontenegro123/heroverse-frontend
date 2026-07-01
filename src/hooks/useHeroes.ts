@@ -2,6 +2,9 @@ import {useState, useEffect} from 'react'
 import axios from 'axios'
 import type {Hero, FilterState} from '../types'
 
+// Leemos la variable de entorno de Vite. Si por algún motivo no existe, dejamos un fallback preventivo.
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+
 export const useHeroes = (search: string, filters: FilterState, page: number) => {
     const [heroes, setHeroes] = useState<Hero[]>([])
     const [totalPages, setTotalPages] = useState<number>(1)
@@ -11,7 +14,8 @@ export const useHeroes = (search: string, filters: FilterState, page: number) =>
         const fetchHeroes = async () => {
             setLoading(true)
             try {
-                const response = await axios.get('http://localhost:5000/api/characters', {
+                // Inyectamos la URL base dinámica de forma limpia
+                const response = await axios.get(`${API_URL}/api/characters`, {
                     params: {
                         name: search,
                         publisher: filters.publisher,

@@ -82,7 +82,7 @@ export default function HeroCompare({ heroes, onClear, t }: HeroCompareProps) {
                     )}
                 </div>
 
-                <div className='compare-card ${hero2 ? `alignment-${hero2.biography.alignment}` : ""}_'>
+                <div className={`compare-card ${hero2 ? `alignment-${hero2.biography.alignment}` : ""}_`}>
                     {hero2 ? (
                         <>
                             <img src={hero2.images.sm} alt={hero2.name} />

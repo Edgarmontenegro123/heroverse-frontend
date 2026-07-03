@@ -1,22 +1,22 @@
-import { useState, useEffect } from 'react'
+import {useState} from 'react' // 👈 Quitamos useEffect porque ya no lo necesitamos acá
 import Header from './components/Header'
 import SearchBar from './components/SearchBar'
 import FilterPanel from './components/FilterPanel'
 import HeroGrid from './components/HeroGrid'
 import HeroModal from './components/HeroModal'
 import HeroCompare from './components/HeroCompare'
-import { useHeroes } from './hooks/useHeroes'
-import { useAppFeatures } from './hooks/useAppFeatures'
-import { useTeam } from './hooks/useTeam'
-import { useVersus } from './hooks/useVersus'
-import { translations } from './utils/languages'
-import type { FilterState, Hero } from './types'
+import {useHeroes} from './hooks/useHeroes'
+import {useAppFeatures} from './hooks/useAppFeatures'
+import {useTeam} from './hooks/useTeam'
+import {useVersus} from './hooks/useVersus'
+import {translations} from './utils/languages'
+import type {FilterState, Hero} from './types'
 
 export default function App() {
     // Lógica delegada a hooks de infraestructura y negocio
-    const { theme, toggleTheme, lang, setLang } = useAppFeatures()
-    const { favorites, handleToggleFavorite } = useTeam()
-    const { compareHeroes, handleSelectForCompare, clearArena } = useVersus()
+    const {theme, toggleTheme, lang, setLang} = useAppFeatures()
+    const {favorites, handleToggleFavorite} = useTeam()
+    const {compareHeroes, handleSelectForCompare, clearArena} = useVersus()
 
     // Estados mínimos de UI local
     const [search, setSearch] = useState('')
@@ -24,18 +24,25 @@ export default function App() {
     const [selectedHero, setSelectedHero] = useState<Hero | null>(null)
     const [filters, setFilters] = useState<FilterState>({ publisher: '', alignment: '' })
 
-    const { heroes, loading, totalPages } = useHeroes(search, filters, page)
+    const {heroes, loading, totalPages} = useHeroes(search, filters, page)
     const t = translations[lang]
 
-    useEffect(() => {
+    // 🎯 Manejadores controlados para resetear la página en el mismo ciclo de renderizado
+    const handleSearchChange = (newSearch: string) => {
+        setSearch(newSearch)
         setPage(1)
-    }, [search, filters])
+    }
+
+    const handleFiltersChange = (newFilters: FilterState) => {
+        setFilters(newFilters)
+        setPage(1)
+    }
 
     return (
         <div className='app-container'>
             <Header theme={theme} toggleTheme={toggleTheme} lang={lang} setLang={setLang} t={t} />
-            <SearchBar search={search} setSearch={setSearch} t={t} />
-            <FilterPanel filters={filters} setFilters={setFilters} t={t} />
+            <SearchBar search={search} setSearch={handleSearchChange} t={t} />
+            <FilterPanel filters={filters} setFilters={handleFiltersChange} t={t} />
             {loading ? (
                 <div className='loading-spinner'>...</div>
             ) : (

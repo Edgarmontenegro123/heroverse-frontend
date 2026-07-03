@@ -84,3 +84,10 @@ export interface HeroGridProps {
     favorites: Hero[]
     onToggleFavorite: (hero: Hero) => void
 }
+
+export interface HeroCompareProps {
+    heroes: Hero[]
+    onClear: () => void
+    t: Record<string, string>
+    lang: Language
+}

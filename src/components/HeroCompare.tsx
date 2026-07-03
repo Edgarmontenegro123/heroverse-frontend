@@ -1,11 +1,5 @@
 import type { Hero } from '../types'
-
-interface HeroCompareProps {
-    heroes: Hero[]
-    onClear: () => void
-    t: any
-    lang: string // Lo mantenemos por si tipado lo requiere, aunque usamos 't'
-}
+import type {HeroCompareProps} from '../types'
 
 export default function HeroCompare({ heroes, onClear, t }: HeroCompareProps) {
     const [hero1, hero2] = heroes
@@ -42,7 +36,6 @@ export default function HeroCompare({ heroes, onClear, t }: HeroCompareProps) {
                     {t.clearArena}
                 </button>
             </div>
-
             <div className='compare-arena-grid'>
                 <div className={`compare-card ${hero1 ? `alignment-${hero1.biography.alignment}` : ''}`}>
                     {hero1 ? (
@@ -56,7 +49,6 @@ export default function HeroCompare({ heroes, onClear, t }: HeroCompareProps) {
                         <div className='placeholder-slot'>{t.selectHero}</div>
                     )}
                 </div>
-
                 <div className='compare-stats-center'>
                     {hero1 && hero2 ? (
                         statsList.map((stat) => {
@@ -82,7 +74,7 @@ export default function HeroCompare({ heroes, onClear, t }: HeroCompareProps) {
                     )}
                 </div>
 
-                <div className={`compare-card ${hero2 ? `alignment-${hero2.biography.alignment}` : ""}_`}>
+                <div className={`compare-card ${hero2 ? `alignment-${hero2.biography.alignment}` : ""}`}>
                     {hero2 ? (
                         <>
                             <img src={hero2.images.sm} alt={hero2.name} />

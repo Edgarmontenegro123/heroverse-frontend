@@ -1,4 +1,5 @@
-import type { HeaderProps } from '../types'
+import type {HeaderProps} from '../types'
+import logo from '../assets/logo.png'
 
 export default function Header({ theme, toggleTheme, lang, setLang, t }: HeaderProps) {
     const toggleLanguage = () => {
@@ -7,9 +8,14 @@ export default function Header({ theme, toggleTheme, lang, setLang, t }: HeaderP
 
     return (
         <header className='app-header'>
-            <h1>{t.title}</h1>
+            <div className='header-logo-container'>
+                <img
+                    src={logo}
+                    alt={t['title'] || 'HeroVerse Multiverse'}
+                    className='header-logo-img'
+                />
+            </div>
             <div className='header-controls'>
-                {/* Botón de Tema Alternable */}
                 <button onClick={toggleTheme} className='control-btn'>
                     {theme === 'light' ? '🌙' : '☀️'}
                 </button>

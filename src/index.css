@@ -38,13 +38,13 @@
 body {
   background-color: var(--bg-primary);
   color: var(--text-main);
-  padding: 20px;
 }
 
-/* Contenedor Principal */
+/* Contenedor Principal con Padding adaptado para no pisar el Header */
 .app-container {
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 20px 20px 20px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -65,14 +65,35 @@ body {
 }
 
 /* ==========================================================================
-   3. HEADER / NAVBAR
+   3. HEADER / NAVBAR PERSISTENTE (STICKY)
    ========================================================================== */
 .app-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 0;
+  padding: 1rem 2rem;
+  background-color: rgba(248, 250, 252, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border-color);
+}
+
+[data-theme='dark'] .app-header {
+  background-color: rgba(15, 23, 42, 0.8);
+}
+
+.header-logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.header-logo-img {
+  height: 48px;
+  width: auto;
+  object-fit: contain;
 }
 
 .header-controls {
@@ -89,6 +110,10 @@ body {
   border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
+}
+
+.control-btn:hover, .lang-select:hover {
+  background: var(--border-color);
 }
 
 /* ==========================================================================

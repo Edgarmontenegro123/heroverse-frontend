@@ -24,9 +24,8 @@ export default function App() {
     const [selectedHero, setSelectedHero] = useState<Hero | null>(null)
     const [filters, setFilters] = useState<FilterState>({ publisher: '', alignment: '' })
 
-    const {heroes, loading, totalPages} = useHeroes(search, filters, page)
+    const { heroes, loading, totalPages, sort, setSort } = useHeroes(search, filters, page)
     const t = translations[lang]
-
     // 🎯 Manejadores controlados para resetear la página en el mismo ciclo de renderizado
     const handleSearchChange = (newSearch: string) => {
         setSearch(newSearch)
@@ -42,7 +41,13 @@ export default function App() {
         <div className='app-container'>
             <Header theme={theme} toggleTheme={toggleTheme} lang={lang} setLang={setLang} t={t} />
             <SearchBar search={search} setSearch={handleSearchChange} t={t} />
-            <FilterPanel filters={filters} setFilters={handleFiltersChange} t={t} />
+            <FilterPanel
+                filters={filters}
+                setFilters={handleFiltersChange}
+                sort={sort}
+                setSort={setSort}
+                t={t}
+            />
             {loading ? (
                 <div className='loading-spinner'>...</div>
             ) : (

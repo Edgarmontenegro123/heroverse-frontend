@@ -23,6 +23,9 @@ export const translations: Record<Language, Record<string, string>> = {
         good: 'Héroe',
         bad: 'Villano',
         neutral: 'Neutral',
+        sortByDefault: 'Por Defecto',
+        sortDesc: 'Mayor a Menor',
+        sortAsc: 'Menor a Mayor',
 
         // --- Gestión de Equipo (Mis Favoritos) ---
         addToTeam: 'Añadir al Equipo',
@@ -71,6 +74,9 @@ export const translations: Record<Language, Record<string, string>> = {
         good: 'Hero',
         bad: 'Villain',
         neutral: 'Neutral',
+        sortByDefault: 'Default Sorting',
+        sortDesc: 'Highest First',
+        sortAsc: 'Lowest First',
 
         // --- Gestión de Equipo (Mis Favoritos) ---
         addToTeam: 'Add to Team',

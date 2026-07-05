@@ -91,9 +91,18 @@ body {
 }
 
 .header-logo-img {
-  height: 48px;
-  width: auto;
-  object-fit: contain;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border-color);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.header-logo-img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.3); /* Usa sutilmente tu --accent-color */
 }
 
 .header-controls {
@@ -150,6 +159,18 @@ body {
   display: flex;
   flex-direction: column;
   gap: 15px;
+}
+
+/* --- Optimización específica para Desktop --- */
+@media (min-width: 1024px) {
+  .header-logo-img {
+    height: 70px;
+    width: 70px; /* Incrementamos la presencia visual en pantallas grandes */
+  }
+
+  .app-header {
+    padding: 0.75rem 3rem; /* Ajustamos levemente el padding para balancear el nuevo tamaño */
+  }
 }
 
 @media (min-width: 768px) {

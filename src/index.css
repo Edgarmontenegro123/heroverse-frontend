@@ -763,3 +763,26 @@ body {
   font-weight: bold;
   color: var(--text-main);
 }
+
+/* Contenedor específico para agrupar los selectores de ordenamiento */
+.sort-panel {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.sort-select {
+  padding: 10px 15px;
+  background: var(--bg-card);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  cursor: pointer;
+  outline: none;
+  font-size: 14px;
+}
+
+.sort-select:hover {
+  border-color: var(--accent-color);
+}

@@ -91,3 +91,12 @@ export interface HeroCompareProps {
     t: Record<string, string>
     lang: Language
 }
+
+export type SortDirection = 'asc' | 'desc';
+
+export type SortField = 'none' | 'intelligence' | 'strength' | 'speed' | 'durability' | 'power' | 'combat';
+
+export interface SortState {
+    field: SortField;
+    direction: SortDirection;
+}

@@ -46,6 +46,11 @@ export const translations: Record<Language, Record<string, string>> = {
         selectSecondHero: 'Selecciona un segundo héroe',
         waitingOpponent: 'Falta elegir un oponente para iniciar la batalla...',
         winner: '🏆 GANADOR',
+        startFight: '¡Luchar!',
+        battleLogTitle: 'Relato del Combate',
+        overcomes: 'supera a',
+        inStat: 'en',
+        empateIn: 'Empate en',
 
         // --- Paginación ---
         pageOf: 'Página',
@@ -97,6 +102,11 @@ export const translations: Record<Language, Record<string, string>> = {
         selectSecondHero: 'Select a second hero',
         waitingOpponent: 'Waiting for an opponent to start battle...',
         winner: '🏆 WINNER',
+        startFight: 'Fight!',
+        battleLogTitle: 'Battle Log',
+        overcomes: 'overcomes',
+        inStat: 'in',
+        empateIn: 'Tie in',
 
         // --- Paginación ---
         pageOf: 'Page',

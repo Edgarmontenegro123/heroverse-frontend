@@ -786,3 +786,100 @@ body {
 .sort-select:hover {
   border-color: var(--accent-color);
 }
+
+/* --- ESTILOS Y ANIMACIONES PARA LA SIMULACIÓN DE BATALLA --- */
+
+.compare-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.fight-btn {
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fight-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.7);
+}
+
+/* Fila activa iluminada durante el round */
+.highlight-step {
+  background: rgba(245, 158, 11, 0.15);
+  border-radius: 8px;
+  transform: scale(1.02);
+  transition: all 0.3s ease;
+}
+
+/* Micro-vibración de choque para las tarjetas */
+.fighting-shake {
+  animation: shake 0.4s infinite;
+}
+
+@keyframes shake {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  20% { transform: translate(-1px, -2px) rotate(-1deg); }
+  40% { transform: translate(-3px, 0px) rotate(1deg); }
+  60% { transform: translate(3px, 2px) rotate(0deg); }
+  80% { transform: translate(1px, -1px) rotate(1deg); }
+  100% { transform: translate(-1px, 2px) rotate(-1deg); }
+}
+
+/* Log de eventos de batalla */
+.battle-log-container {
+  margin-top: 25px;
+  padding: 15px 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.battle-log-container h4 {
+  margin-bottom: 10px;
+  font-size: 15px;
+  color: var(--accent-color);
+  text-align: center;
+}
+
+.battle-log-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.battle-log-item {
+  font-size: 13px;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 3px solid var(--accent-color);
+  border-radius: 4px;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-bounce {
+  animation: bounce 0.6s ease infinite alternate;
+}
+
+@keyframes bounce {
+  from { transform: translateY(0); }
+  to { transform: translateY(-6px); }
+}

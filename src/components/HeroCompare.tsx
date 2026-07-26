@@ -1,7 +1,7 @@
 import {useState} from 'react'
 import type {Hero, HeroCompareProps, BattleLogItem} from '../types'
 
-export default function HeroCompare({heroes, onClear, t}: HeroCompareProps) {
+export default function HeroCompare({heroes, onClear, onRandomMatchup, t}: HeroCompareProps) {
     const [hero1, hero2] = heroes
 
     // Identificador único del enfrentamiento actual
@@ -116,6 +116,14 @@ export default function HeroCompare({heroes, onClear, t}: HeroCompareProps) {
             <div className='compare-header'>
                 <h2>{t.versusTitle}</h2>
                 <div className='compare-actions'>
+                    {/* Botón Aleatorio */}
+                    <button
+                        className='control-btn random-btn'
+                        onClick={onRandomMatchup}
+                        disabled={isFighting}
+                    >
+                        🎲 {t.randomMatchup || 'Aleatorio'}
+                    </button>
                     {hero1 && hero2 && !isFighting && !battleFinished && (
                         <button className='control-btn fight-btn' onClick={handleStartFight}>
                             ⚔️ {t.startFight || '¡Luchar!'}

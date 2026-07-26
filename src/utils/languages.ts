@@ -41,6 +41,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
         // --- Arena Versus ---
         versusTitle: '⚔️ Arena Versus Multiverso',
+        randomMatchup: 'Aleatorio',
         clearArena: 'Limpiar Arena',
         selectHero: 'Selecciona un héroe',
         selectSecondHero: 'Selecciona un segundo héroe',
@@ -97,6 +98,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
         // --- Arena Versus ---
         versusTitle: '⚔️ Multiverse Versus Arena',
+        randomMatchup: 'Random',
         clearArena: 'Clear Arena',
         selectHero: 'Select a hero',
         selectSecondHero: 'Select a second hero',

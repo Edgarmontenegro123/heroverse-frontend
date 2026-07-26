@@ -37,6 +37,27 @@ export default function App() {
         setPage(1)
     }
 
+    // 🎲 Handler para Seleccionar 2 Héroes Aleatorios para la Arena
+    const handleRandomMatchup = () => {
+        if (heroes.length < 2) return
+
+        // Limpiamos la arena previa primero
+        clearArena()
+
+        // Seleccionamos un primer héroe al azar
+        const idx1 = Math.floor(Math.random() * heroes.length)
+        let idx2 = Math.floor(Math.random() * heroes.length)
+
+        // Aseguramos que el segundo sea diferente
+        while (idx2 === idx1) {
+            idx2 = Math.floor(Math.random() * heroes.length)
+        }
+
+        // Enviamos ambos a la arena
+        handleSelectForCompare(heroes[idx1])
+        handleSelectForCompare(heroes[idx2])
+    }
+
     return (
         <div className='app-container'>
             <Header theme={theme} toggleTheme={toggleTheme} lang={lang} setLang={setLang} t={t} />
@@ -80,6 +101,7 @@ export default function App() {
                 <HeroCompare
                     heroes={compareHeroes}
                     onClear={clearArena}
+                    onRandomMatchup={handleRandomMatchup}
                     t={t}
                     lang={lang}
                 />

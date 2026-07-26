@@ -88,6 +88,7 @@ export interface HeroGridProps {
 export interface HeroCompareProps {
     heroes: Hero[]
     onClear: () => void
+    onRandomMatchup: () => void
     t: Record<string, string>
     lang: Language
 }

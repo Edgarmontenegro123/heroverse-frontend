@@ -100,3 +100,12 @@ export interface SortState {
     field: SortField;
     direction: SortDirection;
 }
+
+export interface BattleLogItem {
+    winnerName: string
+    loserName: string
+    statKey: string
+    statLabel: string
+    diff: number
+    isTie: boolean
+}

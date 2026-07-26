@@ -1,22 +1,24 @@
 import {useState} from 'react'
-import type {Hero, HeroCompareProps} from '../types'
+import type {Hero, HeroCompareProps, BattleLogItem} from '../types'
 
-export default function HeroCompare({ heroes, onClear, t }: HeroCompareProps) {
+export default function HeroCompare({heroes, onClear, t}: HeroCompareProps) {
     const [hero1, hero2] = heroes
 
     // Identificador único del enfrentamiento actual
     const fightKey = `${hero1?.id || 'none'}-${hero2?.id || 'none'}`
 
-    // Guardamos la clave anterior para detectar el cambio durante el renderizado (sin useEffect)
+    // Guardamos la clave anterior para detectar el cambio durante el renderizado
     const [prevFightKey, setPrevFightKey] = useState<string>(fightKey)
 
     // --- Estados para el motor de simulación de batalla ---
     const [isFighting, setIsFighting] = useState<boolean>(false)
     const [activeStatIndex, setActiveStatIndex] = useState<number>(-1)
     const [battleFinished, setBattleFinished] = useState<boolean>(false)
-    const [battleLog, setBattleLog] = useState<string[]>([])
 
-    // Ajustamos los estados durante el renderizado si cambian los héroes (Patrón recomendado por React)
+    // 💡 AHORA: battleLog guarda objetos de tipo BattleLogItem[], NO cadenas de texto estáticas
+    const [battleLog, setBattleLog] = useState<BattleLogItem[]>([])
+
+    // Ajustamos los estados durante el renderizado si cambian los héroes
     if (fightKey !== prevFightKey) {
         setPrevFightKey(fightKey)
         setIsFighting(false)
@@ -52,20 +54,41 @@ export default function HeroCompare({ heroes, onClear, t }: HeroCompareProps) {
         setBattleLog([])
 
         let step = 0
-        const logEntries: string[] = []
+        const logEntries: BattleLogItem[] = []
 
         const interval = setInterval(() => {
             const currentStat = statsList[step]
             const v1 = hero1.powerstats[currentStat.key as keyof typeof hero1.powerstats] || 0
             const v2 = hero2.powerstats[currentStat.key as keyof typeof hero2.powerstats] || 0
 
-            // Generamos la frase descriptiva del round
+            // 💡 AHORA: En lugar de crear un string estático, guardamos los datos puros de la ronda
             if (v1 > v2) {
-                logEntries.push(`⚡ ${hero1.name} ${t.overcomes || 'supera a'} ${hero2.name} ${t.inStat || 'en'} ${currentStat.label} (+${v1 - v2} pts)`)
+                logEntries.push({
+                    winnerName: hero1.name,
+                    loserName: hero2.name,
+                    statKey: currentStat.key,
+                    statLabel: currentStat.label,
+                    diff: v1 - v2,
+                    isTie: false
+                })
             } else if (v2 > v1) {
-                logEntries.push(`⚡ ${hero2.name} ${t.overcomes || 'supera a'} ${hero1.name} ${t.inStat || 'en'} ${currentStat.label} (+${v2 - v1} pts)`)
+                logEntries.push({
+                    winnerName: hero2.name,
+                    loserName: hero1.name,
+                    statKey: currentStat.key,
+                    statLabel: currentStat.label,
+                    diff: v2 - v1,
+                    isTie: false
+                })
             } else {
-                logEntries.push(`⚖️ ${t.empateIn || 'Empate en'} ${currentStat.label}`)
+                logEntries.push({
+                    winnerName: '',
+                    loserName: '',
+                    statKey: currentStat.key,
+                    statLabel: currentStat.label,
+                    diff: 0,
+                    isTie: true
+                })
             }
 
             setBattleLog([...logEntries])
@@ -81,7 +104,6 @@ export default function HeroCompare({ heroes, onClear, t }: HeroCompareProps) {
     }
 
     const getWinnerClass = (val1: number, val2: number, current: 1 | 2, index: number) => {
-        // Solo resaltamos ganadores de la fila si el paso de la animación ya la alcanzó
         if (!battleFinished && index > activeStatIndex) return ''
         if (val1 === val2) return ''
         if (val1 > val2) return current === 1 ? 'stat-winner' : 'stat-loser'
@@ -182,11 +204,20 @@ export default function HeroCompare({ heroes, onClear, t }: HeroCompareProps) {
                 <div className='battle-log-container'>
                     <h4>📜 {t.battleLogTitle || 'Relato del Combate'}</h4>
                     <div className='battle-log-list'>
-                        {battleLog.map((log, index) => (
-                            <p key={index} className='battle-log-item animate-fade-in'>
-                                {log}
-                            </p>
-                        ))}
+                        {battleLog.map((item, index) => {
+                            // 💡 AHORA: Traducimos la estadística y la frase EN TIEMPO REAL en cada renderizado usando 't'
+                            const currentStatLabel = t[item.statKey] || item.statLabel
+
+                            return (
+                                <p key={index} className='battle-log-item animate-fade-in'>
+                                    {item.isTie ? (
+                                        `⚖️ ${t.empateIn || 'Empate en'} ${currentStatLabel}`
+                                    ) : (
+                                        `⚡ ${item.winnerName} ${t.overcomes || 'supera a'} ${item.loserName} ${t.inStat || 'en'} ${currentStatLabel} (+${item.diff} pts)`
+                                    )}
+                                </p>
+                            )
+                        })}
                     </div>
                 </div>
             )}

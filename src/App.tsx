@@ -1,7 +1,8 @@
-import {useState} from 'react' // 👈 Quitamos useEffect porque ya no lo necesitamos acá
+import {useState} from 'react'
 import Header from './components/Header'
 import SearchBar from './components/SearchBar'
 import FilterPanel from './components/FilterPanel'
+import HeroSkeletonCard from './components/HeroSkeletonCard'
 import HeroGrid from './components/HeroGrid'
 import HeroModal from './components/HeroModal'
 import HeroCompare from './components/HeroCompare'
@@ -70,7 +71,11 @@ export default function App() {
                 t={t}
             />
             {loading ? (
-                <div className='loading-spinner'>...</div>
+                <div className='hero-grid'>
+                    {Array.from({ length: 12 }).map((_, index) => (
+                        <HeroSkeletonCard key={index} />
+                    ))}
+                </div>
             ) : (
                 <>
                     <HeroGrid

@@ -6,11 +6,12 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
 export const useHeroes = (search: string, filters: FilterState, page: number) => {
     const [heroes, setHeroes] = useState<Hero[]>([])
+    const [allHeroesFiltered, setAllHeroesFiltered] = useState<Hero[]>([])
     const [totalPages, setTotalPages] = useState<number>(1)
     const [loading, setLoading] = useState<boolean>(false)
 
-    // Nuevo estado para controlar el ordenamiento dinámico por powerstats
-    const [sort, setSort] = useState<SortState>({ field: 'none', direction: 'desc' })
+    // Estado para controlar el ordenamiento dinámico por powerstats
+    const [sort, setSort] = useState<SortState>({field: 'none', direction: 'desc'})
 
     useEffect(() => {
         const fetchHeroes = async () => {
@@ -38,7 +39,6 @@ export const useHeroes = (search: string, filters: FilterState, page: number) =>
                     data.sort((a, b) => {
                         const fieldKey = sort.field as keyof typeof a.powerstats
 
-                        // Sanitización preventiva ante datos parciales de la Superhero API
                         const statA = Number(a.powerstats[fieldKey]) || 0
                         const statB = Number(b.powerstats[fieldKey]) || 0
 
@@ -49,6 +49,9 @@ export const useHeroes = (search: string, filters: FilterState, page: number) =>
                         }
                     })
                 }
+
+                // Guardamos el catálogo completo filtrado para el sorteo aleatorio multiversal
+                setAllHeroesFiltered(data)
 
                 const limit = 12
                 const total = Math.ceil(data.length / limit)
@@ -66,12 +69,11 @@ export const useHeroes = (search: string, filters: FilterState, page: number) =>
         }
 
         const delayDebounceFn = setTimeout(() => {
-            fetchHeroes()
+            void fetchHeroes()
         }, 300)
 
         return () => clearTimeout(delayDebounceFn)
-        // Agregamos sort.field y sort.direction al array de dependencias para disparar el re-ordenamiento
     }, [search, filters.publisher, filters.alignment, page, sort.field, sort.direction])
 
-    return { heroes, loading, totalPages, sort, setSort }
+    return { heroes, allHeroesFiltered, loading, totalPages, sort, setSort }
 }

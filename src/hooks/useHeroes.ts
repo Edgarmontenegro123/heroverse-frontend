@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useRef} from 'react'
 import axios from 'axios'
 import type {Hero, FilterState, SortState} from '../types'
 
@@ -6,9 +6,11 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
 export const useHeroes = (search: string, filters: FilterState, page: number) => {
     const [heroes, setHeroes] = useState<Hero[]>([])
-    const [allHeroesFiltered, setAllHeroesFiltered] = useState<Hero[]>([])
     const [totalPages, setTotalPages] = useState<number>(1)
     const [loading, setLoading] = useState<boolean>(false)
+
+    // Referencia para mantener TODOS los personajes descargados de la API (para el sorteo aleatorio)
+    const allHeroesRef = useRef<Hero[]>([])
 
     // Estado para controlar el ordenamiento dinámico por powerstats
     const [sort, setSort] = useState<SortState>({field: 'none', direction: 'desc'})
@@ -27,6 +29,9 @@ export const useHeroes = (search: string, filters: FilterState, page: number) =>
 
                 let data: Hero[] = Array.isArray(response.data) ? response.data : response.data.data || []
 
+                // Guardamos la lista completa en nuestra referencia
+                allHeroesRef.current = data
+
                 if (filters.publisher) {
                     data = data.filter(h => h.biography.publisher === filters.publisher)
                 }
@@ -34,24 +39,16 @@ export const useHeroes = (search: string, filters: FilterState, page: number) =>
                     data = data.filter(h => h.biography.alignment === filters.alignment)
                 }
 
-                // --- INYECCIÓN DE ORDENAMIENTO DINÁMICO POR POWERSTATS ---
+                // --- ORDENAMIENTO DINÁMICO POR POWERSTATS ---
                 if (sort.field !== 'none') {
                     data.sort((a, b) => {
                         const fieldKey = sort.field as keyof typeof a.powerstats
-
                         const statA = Number(a.powerstats[fieldKey]) || 0
                         const statB = Number(b.powerstats[fieldKey]) || 0
 
-                        if (sort.direction === 'asc') {
-                            return statA - statB
-                        } else {
-                            return statB - statA
-                        }
+                        return sort.direction === 'asc' ? statA - statB : statB - statA
                     })
                 }
-
-                // Guardamos el catálogo completo filtrado para el sorteo aleatorio multiversal
-                setAllHeroesFiltered(data)
 
                 const limit = 12
                 const total = Math.ceil(data.length / limit)
@@ -75,5 +72,20 @@ export const useHeroes = (search: string, filters: FilterState, page: number) =>
         return () => clearTimeout(delayDebounceFn)
     }, [search, filters.publisher, filters.alignment, page, sort.field, sort.direction])
 
-    return { heroes, allHeroesFiltered, loading, totalPages, sort, setSort }
+    // 🎲 Función dedicada a obtener 2 héroes aleatorios de la base completa de datos
+    const getRandomHeroes = (): Hero[] => {
+        const fullList = allHeroesRef.current
+        if (fullList.length < 2) return []
+
+        const idx1 = Math.floor(Math.random() * fullList.length)
+        let idx2 = Math.floor(Math.random() * fullList.length)
+
+        while (idx2 === idx1) {
+            idx2 = Math.floor(Math.random() * fullList.length)
+        }
+
+        return [fullList[idx1], fullList[idx2]]
+    }
+
+    return {heroes, loading, totalPages, sort, setSort, getRandomHeroes}
 }

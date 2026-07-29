@@ -25,7 +25,7 @@ export default function App() {
     const [selectedHero, setSelectedHero] = useState<Hero | null>(null)
     const [filters, setFilters] = useState<FilterState>({ publisher: '', alignment: '' })
 
-    const { heroes, allHeroesFiltered, loading, totalPages, sort, setSort } = useHeroes(search, filters, page)
+    const {heroes, loading, totalPages, sort, setSort, getRandomHeroes} = useHeroes(search, filters, page)
     const t = translations[lang]
     // 🎯 Manejadores controlados para resetear la página en el mismo ciclo de renderizado
     const handleSearchChange = (newSearch: string) => {
@@ -40,23 +40,12 @@ export default function App() {
 
     // 🎲 Handler para Seleccionar 2 Héroes Aleatorios para la Arena
     const handleRandomMatchup = () => {
-        if (allHeroesFiltered.length < 2) return
+        const randomPair = getRandomHeroes()
+        if (randomPair.length < 2) return
 
-        // Limpiamos la arena previa primero
         clearArena()
-
-        // Seleccionamos un primer héroe al azar
-        const idx1 = Math.floor(Math.random() * allHeroesFiltered.length)
-        let idx2 = Math.floor(Math.random() * allHeroesFiltered.length)
-
-        // Aseguramos que el segundo sea diferente
-        while (idx2 === idx1) {
-            idx2 = Math.floor(Math.random() * allHeroesFiltered.length)
-        }
-
-        // Enviamos ambos a la arena
-        handleSelectForCompare(allHeroesFiltered[idx1])
-        handleSelectForCompare(allHeroesFiltered[idx2])
+        handleSelectForCompare(randomPair[0])
+        handleSelectForCompare(randomPair[1])
     }
 
     return (
